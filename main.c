@@ -7,6 +7,7 @@ typedef struct operation
 {
     char name[50];
     char stage[50];
+    bool status ;
 }op;
 
 typedef struct
@@ -16,22 +17,23 @@ typedef struct
     size_t size;
 } opArray;
 
-struct patient 
+typedef struct 
 {
     char name[50];
     bool status;
     opArray ops;
-};
+}patient;
+
 typedef struct 
 {
-    struct patient *array;
+    patient *array;
     size_t used;
     size_t size;
 } pArray;
 
 void initpArray(pArray *a,size_t initialSize)
 {
-    a -> array = malloc(initialSize * sizeof(struct patient));
+    a -> array = malloc(initialSize * sizeof(patient));
     a -> used = 0;
     a ->size = initialSize;
 }
@@ -52,12 +54,12 @@ void insertOpArray(opArray *a, op element)
     a->array[a->used++] = element;
 }
 
-void insertpArray(pArray *a, struct patient element)
+void insertpArray(pArray *a,patient element)
 {
     if(a->used == a->size)
     {
 	a->size *= 2;
-	a->array = realloc(a->array, a->size * sizeof(struct patient));
+	a->array = realloc(a->array, a->size * sizeof(patient));
     }
     a->array[a->used++] = element;
 }
@@ -90,47 +92,79 @@ int main(int argc,char* argv[])
     printf("if you want to quit press(q): \n");
     bool shouldQuit = false;
     while (!shouldQuit) {
-	char *input;
 	// adding patient 
 	printf("write patient name: \n");
-	struct patient p;
-	initOpArray(&p.ops, 2);
-	input = userInput();
+	
+	char *input = userInput();//getting user input
+	
 	if(strcmp(input, "q") == 0)
 	{
 	    free(input);
-	    shouldQuit = true;
 	    break;
 	};
+
+	patient p;
 	strcpy(p.name,input);
 	free(input);
+	initOpArray(&p.ops, 2);
 	//---------adding operations-------------
 	printf("types of operations: \n");
 	printf("type (p) to stop adding operations and return to patients: \n");
 	while(true){
 	    input = userInput();
 	    if (strcmp(input, "q") == 0) {
-		free(input);
-		shouldQuit = true;
+		shouldQuit =true;
 		break;
 	    }
 	    if(strcmp(input, "p") == 0)
 	    {
-		free(input);
 		break;
 	    };
+	    
 	    op new_op;
-	    strcpy(new_op.name,input);
+	    new_op.status = false;
+	    strcpy(new_op.name,input); // here for adding op name
+	    if(strcmp(input,"endo") == 0 || strcmp(input,"resto") == 0){	
+		printf("what is the stage: \n");
+		input = userInput();
+		strcpy(new_op.stage,input); // here for adding op stage
+		if(strcmp(input, "final restoration") == 0){
+		    new_op.status = true;
+		};
+	    }else{
+		new_op.status = true;
+	    };
 	    insertOpArray(&p.ops,new_op);
+	    printf("operation added!\n");
 	    free(input);
-	    //----------------------
+	//----------------------
+	
+	for(int i=0;i < p.ops.used;i++){
+		if(p.ops.array[i].status == false){
+		    p.status = false;
+		    break;
+	    }else{
+		p.status = true;
+		};
+	    }
 	}
-
+	
 	insertpArray(&patients, p);
-	if (shouldQuit) {
-        break;
+	
     }
+    printf("press (c) to print completed cases or (i) for incompleted or (a) for all: \n");
+    char *input = userInput();
+    if(strcmp(input,"c")==0){
+	    for (int i = 0; i < patients.used ; i++) {
+	    if(patients.array[i].status == 1){
+		printf("Patient %d: %s\n", i + 1, patients.array[i].name);
+		for (int r = 0; r < patients.array[i].ops.used; r++) {
+		    printf("operations performed: %d: %s\n",r+1,patients.array[i].ops.array[r].name);
+		}
+	    }
+	}
     }
+    return 0;
     // Print the values of the array of structs
     for (int i = 0; i < patients.used; i++) {
         printf("Patient %d: %s\n", i + 1, patients.array[i].name);
