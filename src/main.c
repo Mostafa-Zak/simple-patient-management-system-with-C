@@ -3,9 +3,22 @@
 #include <string.h>
 #include <stdbool.h>
 #include "ds.h"
-
+#include "raylib.h"
 int main(void)
 {
+    const int screenW = 800;
+    const int screenH = 600;
+    InitWindow(screenW, screenH, "PMS");
+    SetTargetFPS(60);
+    //main loop
+    while (!WindowShouldClose()) {
+	BeginDrawing();
+	    ClearBackground(RAYWHITE);
+	    DrawText("Hello world", 190, 200, 20, BLUE);
+	EndDrawing();
+    }
+    CloseWindow();
+    return 0;
     dArray patients;
     initArray(&patients, 10,sizeof(patient));
     printf("if you want to quit press(q): \n");
