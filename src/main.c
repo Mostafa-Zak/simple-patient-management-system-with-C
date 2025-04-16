@@ -72,6 +72,10 @@ int main(void)
 	p.ops.array = ops.array;
 	p.ops.used = ops.used;
 	p.ops.size = ops.size;
+	p.ops.elementSize = ops.elementSize;
+	ops.array = NULL;
+	ops.used = 0;
+	ops.size = 0;
 	insertArray(&patients, &p);
 	
     }
@@ -83,7 +87,7 @@ int main(void)
 	    if(pList[i].status == true){
 		printf("Patient %zu: %s\n", i + 1, pList[i].name);
 		for (size_t r = 0; r < pList[i].ops.used; r++) {
-		    op *opsList = (op *)pList->ops.array;
+		    op *opsList = (op *)(pList[i].ops.array);
 		    printf("operations performed: %zu: %s\n",r+1,opsList[r].name);
 		}
 	    }
