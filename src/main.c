@@ -4,8 +4,63 @@
 #include <stdbool.h>
 #include "ds.h"
 #include "raylib.h"
+
+
+void addNewPatient(dArray *patients) {
+//TODO: transfare the logic of adding patient here
+
+}
+
+void loadPatientsFromCSV(dArray *patients, const char *filename) {
+//TODO: function to load patient from DB
+}
+
+void printPatients(char *input,dArray patients){
+	patient *pList = (patient *)patients.array;
+	if(strcmp(input,"c")==0){
+	    for (size_t i = 0; i < patients.used ; i++) {
+	    if(pList[i].status == true){
+		printf("Patient %zu: %s\n", i + 1, pList[i].name);
+		for (size_t r = 0; r < pList[i].ops.used; r++) {
+		    op *opsList = (op *)(pList[i].ops.array);
+		    printf("operations performed: %zu: %s\n",r+1,opsList[r].name);
+		}
+	    }
+	}
+    }
+    else if(strcmp(input,"i") == 0) {
+    // print incomplete patients
+     for (size_t i = 0; i < patients.used ; i++) {
+	    if(pList[i].status == false){
+		printf("Patient %zu: %s\n", i + 1, pList[i].name);
+		for (size_t r = 0; r < pList[i].ops.used; r++) {
+		    op *opsList = (op *)(pList[i].ops.array);
+		    printf("operations performed: %zu: %s\n",r+1,opsList[r].name);
+		}
+	    }
+	}
+
+    }
+    else if(strcmp(input,"a") == 0) {
+    // print all patients
+    for (size_t i = 0; i < patients.used ; i++) {
+	    if(pList[i].status == true){
+		printf("Patient %zu: %s\n", i + 1, pList[i].name);
+		for (size_t r = 0; r < pList[i].ops.used; r++) {
+		    op *opsList = (op *)(pList[i].ops.array);
+		    printf("operations performed: %zu: %s\n",r+1,opsList[r].name);
+		}
+	    }
+	}
+}
+}
+
+
+
 int main(void)
 {
+
+    //TODO: render ui here 
     const int screenW = 800;
     const int screenH = 600;
     InitWindow(screenW, screenH, "PMS");
@@ -13,12 +68,18 @@ int main(void)
     //main loop
     while (!WindowShouldClose()) {
 	BeginDrawing();
-	    ClearBackground(RAYWHITE);
-	    DrawText("Hello world", 190, 200, 20, BLUE);
+	    ClearBackground(WHITE);
+	    for(int i=0;i<100;i++){
+		for(int r=0;r<100;r++){
+		    Color cc = { r+i, r+i, r+i,r+i } ;
+		    DrawCircle(50*r+i,50*r+i,50, cc);
+	    }
+	}
+	    DrawText("Hello world", 190, 200, 20,BLACK );
 	EndDrawing();
     }
     CloseWindow();
-    return 0;
+
     dArray patients;
     initArray(&patients, 10,sizeof(patient));
     printf("if you want to quit press(q): \n");
@@ -57,7 +118,9 @@ int main(void)
 	    op new_op;
 	    new_op.status = false;
 	    strcpy(new_op.name,input); // here for adding op name
+	    //---------------------
 	    // handling stage
+	    //--------------------
 	    if(strcmp(input,"endo") == 0 || strcmp(input,"resto") == 0){	
 		printf("what is the stage: \n");
 		input = userInput();
@@ -95,31 +158,42 @@ int main(void)
     patient *pList = (patient *)patients.array;
     printf("press (c) to print completed cases or (i) for incompleted or (a) for all: \n");
     char *input = userInput();
-    if(strcmp(input,"c")==0){
-	    for (size_t i = 0; i < patients.used ; i++) {
+    printPatients(input,patients);
+    free(input);
+    // Print the values of the array of structs
+
+	FILE *fp;
+	size_t ret;
+	unsigned char buffer[4];
+	fp = fopen("data.csv", "a+");
+	if (!fp) {
+               perror("fopen");
+               return EXIT_FAILURE;
+           }
+	
+    ret = fread(buffer, 1, 1, fp);
+           if (ret != 1) {
+               fprintf(stderr, "fread() failed: %zu\n", ret);
+               exit(EXIT_FAILURE);
+           }
+
+
+
+    for (size_t i = 0; i < patients.used ; i++) {
 	    if(pList[i].status == true){
-		printf("Patient %zu: %s\n", i + 1, pList[i].name);
+		printf("%zu: %s\n", i + 1, pList[i].name);
 		for (size_t r = 0; r < pList[i].ops.used; r++) {
 		    op *opsList = (op *)(pList[i].ops.array);
-		    printf("operations performed: %zu: %s\n",r+1,opsList[r].name);
+		    fprintf(fp, "\"%s\",\"%s\"\n", pList[i].name, opsList[r].name);
 		}
 	    }
-	}
     }
-    free(input);
-    for(size_t i = 0 ;i<patients.used;i++){
+
+    fclose(fp);
+     for(size_t i = 0 ;i<patients.used;i++){
 	free(pList[i].ops.array);
     }
     freeArray(&patients);
+
     return 0;
-
-    // Print the values of the array of structs
-
-	/*   FILE *fpt;*/
-	/*   fpt = fopen("data.csv", "a+");*/
-	/*   for(int i =0; i<patients.used;i++){*/
-	/*fprintf(fpt,"%d, %s,%s\n", i + 1, patients.array[i].name);*/
-	/*   }*/
-	/*   fclose(fpt);*/
- 
 }
