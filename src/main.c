@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "ds.h"
 //#include "raylib.h"
-
+#include "sqlite3.h"
 /*#define RAYGUI_IMPLEMENTATION*/
 /*#include "raygui.h"*/
 /*#undef RAYGUI_IMPLEMENTATION            // Avoid including raygui implementation again*/
@@ -75,20 +75,20 @@ void addDoctor(dArray *doctors){
     initArray(doctors,10, sizeof(doctor));
     
 }
-/**/
-/*int loadDataFromDb(dArray *patients, const char *filename) {*/
-/*//TODO: function to load data from DB*/
-/*    sqlite3 *db;*/
-/**/
-/*    int rc = sqlite3_open(filename, &db);*/
-/*    if (rc != SQLITE_OK) {*/
-/*        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));*/
-/*        return 1;*/
-/*    }*/
-/*    const char *sql = "CREATE TABLE IF NOT EXISTS patients";*/
-/**/
-/*}*/
-/**/
+
+int loadDataFromDb(dArray *patients, const char *filename) {
+//TODO: function to load data from DB
+    sqlite3 *db;
+
+    int rc = sqlite3_open(filename, &db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        return 1;
+    }
+    const char *sql = "CREATE TABLE IF NOT EXISTS patients";
+return 0;
+}
+
 void printPatients(char *input,dArray patients){
 	patient *pList = (patient *)patients.array;
 	if(strcmp(input,"c")==0){
