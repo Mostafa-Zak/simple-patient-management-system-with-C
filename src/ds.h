@@ -26,6 +26,10 @@ typedef struct
     dArray ops;
 }patient;
 
+typedef struct{
+    char name[50];
+    dArray patients;
+}doctor;
 
 void initArray(dArray *a,size_t initialSize,size_t elementSize);
 void insertArray(dArray *a,void *elemnt);
