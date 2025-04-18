@@ -35,7 +35,7 @@ void initArray(dArray *a,size_t initialSize,size_t elementSize);
 void insertArray(dArray *a,void *elemnt);
 void freeArray(dArray *a);
 char* userInput();
-
+char *getInput(const char *prompt);
 
 
 

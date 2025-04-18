@@ -37,3 +37,7 @@ char* userInput()
 	return input;
 };
 
+char *getInput(const char *prompt) {
+    printf("%s", prompt);    // Show user what to do
+    return userInput();      // Get their input and return it
+}

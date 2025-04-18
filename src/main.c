@@ -15,28 +15,31 @@ void addOp(dArray *ops){
     //TODO: implementing logic for adding new ops
 
     //---------adding operations-------------
-	
-    printf("type (p) to stop adding operations and return to patients: \n");
-    printf("types of operations: \n");
-    char *input = userInput();
-    op new_op;
-	    new_op.status = false;
-	    strcpy(new_op.name,input); // here for adding op name
-	    if(strcmp(input,"endo") == 0 || strcmp(input,"resto") == 0){	
-		printf("what is the stage: \n");
-		input = userInput();
-		strcpy(new_op.stage,input); // here for adding op stage
-		if(strcmp(input, "final restoration") == 0){
-		    new_op.status = true;
-		};
-	    }else{
-		new_op.status = true;
-	    };
-	    insertArray(ops,&new_op);
-	    printf("operation added!\n");
+    while(true){
+	char *input = getInput("Type operation name (or type 'p' to stop adding operations):\n");
+	if (strcmp(input, "p") == 0) {
 	    free(input);
+	    break;
+	    }
+	op new_op;
+	new_op.status = false;
+	strcpy(new_op.name,input); // here for adding op name
+	free(input);
+	if(strcmp(new_op.name,"endo") == 0 || strcmp(new_op.name,"resto") == 0){	
+	    input = getInput("what is the stage: \n");
+	    strcpy(new_op.stage,input); // here for adding op stage
+	    if(strcmp(input, "final restoration") == 0){
+		new_op.status = true;
+	    }
+	    free(input);
+	}else{
+		new_op.status = true;
+	};
+	insertArray(ops,&new_op);
+	printf("operation added!\n");
 	//----------------------
-}
+	}
+    }
 
 void addPatient(dArray *patients) {
 //TODO: transfare the logic of adding patient here
@@ -143,25 +146,27 @@ int main(void)
     bool shouldQuit = false;
  
     while (!shouldQuit) {
-	// adding patient 
-	
-	char *input = userInput();//getting user input
-	
-	if(strcmp(input, "q") == 0)
-	{
-	    free(input);
-	    break;
-	};
+	 char *input = getInput("\n(d) Add patient, (q) Quit, or (s) Show patients: ");
 
-	//---------adding operations-------------
-		    addPatient(&patients);
+        if (strcmp(input, "q") == 0) {
+            free(input);
+            shouldQuit = true;
+        } else if (strcmp(input, "d") == 0) {
+            addPatient(&patients);
+            free(input);
+
+       }else if (strcmp(input, "s") == 0) {
+            char *viewChoice = getInput("Show (c) completed, (i) incomplete, (a) all: ");
+            printPatients(viewChoice, patients);
+	    free(viewChoice);
+            free(input);
+        } else {
+            printf("Invalid input!\n");
+            free(input);
+        }
     }
-    patient *pList = (patient *)patients.array;
-    printf("press (c) to print completed cases or (i) for incompleted or (a) for all: \n");
-    char *input = userInput();
-    printPatients(input,patients);
-    free(input);
     
+    patient *pList = (patient *)patients.array;
      for(size_t i = 0 ;i<patients.used;i++){
 	free(pList[i].ops.array);
     }
