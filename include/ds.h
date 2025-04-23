@@ -39,7 +39,7 @@ void freeArray(dArray *a);
 char* userInput();
 char *getInput(const char *prompt);
 void addOp(dArray *ops);
-void addPatient(dArray *patients,char *status);
+void addPatient(dArray *patients);
 void addDoctor(dArray *doctors);
 void printPatients(char *input, dArray doctors);
 int selectDoctor(dArray *doctors);
