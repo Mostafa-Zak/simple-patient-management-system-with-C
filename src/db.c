@@ -1,7 +1,11 @@
 #include "../include/db.h"
+
+// config.h
+#define DB_PATH "data/PMS.db"
+#define INIT_SQL_PATH "sql/init.sql"
+
 int init_db(sqlite3 **db) {
-  printf("initdb excute:\n");
-  int rc = sqlite3_open("PMS.db", db);
+  int rc = sqlite3_open(DB_PATH, db);
   if (rc != SQLITE_OK) {
     fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(*db));
     sqlite3_close(*db);
@@ -11,12 +15,11 @@ int init_db(sqlite3 **db) {
 }
 
 int create_tables(sqlite3 *db) {
-  printf("create table excuted\n");
   FILE *file;
   long file_size;
   char *sql_buffer;
   // Open the SQL schema file
-  file = fopen("/home/mostafa/projects/Cprojects/PMS/src/init.sql", "r");
+  file = fopen(INIT_SQL_PATH, "r");
   if (!file) {
     fprintf(stderr, "Cannot open schema file: %s\n", "init.sql");
     sqlite3_close(db);

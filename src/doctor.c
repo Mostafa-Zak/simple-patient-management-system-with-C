@@ -61,6 +61,7 @@ int insert_doctor(sqlite3 *db, const char *name) {
     sqlite3_finalize(stmt);
     return rc;
   }
+  int id = (int)sqlite3_last_insert_rowid(db);
   sqlite3_finalize(stmt);
-  return 0;
+  return id;
 };
