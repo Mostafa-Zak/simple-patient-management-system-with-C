@@ -1,10 +1,8 @@
-#include <sqlite3.h>
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "../include/db.h"
 int init_db(sqlite3 **db) {
-  int rc = sqlite3_open("../data/PMS.db", db);
-  if (rc) {
+  printf("initdb excute:\n");
+  int rc = sqlite3_open("PMS.db", db);
+  if (rc != SQLITE_OK) {
     fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(*db));
     sqlite3_close(*db);
     return rc;
@@ -13,12 +11,12 @@ int init_db(sqlite3 **db) {
 }
 
 int create_tables(sqlite3 *db) {
-
+  printf("create table excuted\n");
   FILE *file;
   long file_size;
   char *sql_buffer;
   // Open the SQL schema file
-  file = fopen("../sql/init.sql", "r");
+  file = fopen("/home/mostafa/projects/Cprojects/PMS/src/init.sql", "r");
   if (!file) {
     fprintf(stderr, "Cannot open schema file: %s\n", "init.sql");
     sqlite3_close(db);
@@ -59,114 +57,5 @@ int create_tables(sqlite3 *db) {
   fclose(file);
   return 0;
 };
-
-int insert_doctor(sqlite3 *db, const char *name) {
-  const char *sql = "INSERT INTO doctors (name) VALUES (?);";
-  sqlite3_stmt *stmt;
-  int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
-  if (rc) {
-    fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  rc = sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
-  if (rc != SQLITE_OK) {
-    fprintf(stderr, "Couldn't bind to prepared sql stmt: %s\n",
-            sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  rc = sqlite3_step(stmt);
-  if (rc != SQLITE_DONE) {
-    fprintf(stderr, "Execution failed: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  sqlite3_finalize(stmt);
-  return 0;
-};
-
-int insert_patient(sqlite3 *db, const char *name, int age, int doctor_id) {
-
-  const char *sql = "INSERT INTO patients (name,age,doctor_id) VALUES (?,?,?);";
-  sqlite3_stmt *stmt;
-  int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
-  if (rc) {
-    fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  if ((rc = sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC)) != SQLITE_OK ||
-      (rc = sqlite3_bind_int(stmt, 2, age)) != SQLITE_OK ||
-      (rc = sqlite3_bind_int(stmt, 3, doctor_id)) != SQLITE_OK) {
-    fprintf(stderr, "Couldn't bind to prepared sql stmt: %s\n",
-            sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  rc = sqlite3_step(stmt);
-  if (rc != SQLITE_DONE) {
-    fprintf(stderr, "Execution failed: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  sqlite3_finalize(stmt);
-  return 0;
-}
-
-int insert_operation(sqlite3 *db, int patient_id, const char *description,
-                     const char *date) {
-
-  const char *sql =
-      "INSERT INTO operations (patient_id ,description,date) VALUES (?,?,?);";
-  sqlite3_stmt *stmt;
-  int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
-  if (rc) {
-    fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  if ((rc = sqlite3_bind_int(stmt, 1, patient_id)) != SQLITE_OK ||
-      (rc = sqlite3_bind_text(stmt, 2, description, -1, SQLITE_STATIC)) !=
-          SQLITE_OK ||
-      (rc = sqlite3_bind_text(stmt, 3, date, -1, SQLITE_STATIC)) != SQLITE_OK) {
-    fprintf(stderr, "Couldn't bind to prepared sql stmt: %s\n",
-            sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  rc = sqlite3_step(stmt);
-  if (rc != SQLITE_DONE) {
-    fprintf(stderr, "Execution failed: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-  sqlite3_finalize(stmt);
-
-  return 0;
-}
-
-int fetch_doctors(sqlite3 *db) {
-  const char *sql = "SELECT * FROM doctors;";
-  sqlite3_stmt *stmt;
-  int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
-  if (rc != SQLITE_OK) {
-    fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
-    return rc;
-  }
-  while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
-    printf("Doctor ID: %d, Name: %s\n", sqlite3_column_int(stmt, 0),
-           sqlite3_column_text(stmt, 1));
-  }
-  if (rc != SQLITE_DONE) {
-    fprintf(stderr, "Execution failed: %s\n", sqlite3_errmsg(db));
-    sqlite3_finalize(stmt);
-    return rc;
-  }
-
-  sqlite3_finalize(stmt);
-
-  return 0;
-};
-
+// TODO: some basic functions to retrieve data from data base
 void close_db(sqlite3 *db) { sqlite3_close(db); }

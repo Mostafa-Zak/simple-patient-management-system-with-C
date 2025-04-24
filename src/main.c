@@ -1,8 +1,10 @@
+#include "../include/db.h"
+#include "../include/doctor.h"
 #include "../include/ds.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <time.h>
 // #include "raylib.h"
 #include "sqlite3.h"
 /*#define RAYGUI_IMPLEMENTATION*/
@@ -11,19 +13,6 @@
  * implementation again*/
 
 #define SIZEOF(A) (sizeof(A) / sizeof(A[0]))
-int loadDataFromDb(dArray *patients, const char *filename) {
-  // TODO: function to load data from DB
-  sqlite3 *db;
-
-  int rc = sqlite3_open(filename, &db);
-  if (rc != SQLITE_OK) {
-    fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-    return 1;
-  }
-  const char *sql = "CREATE TABLE IF NOT EXISTS patients";
-  return 0;
-}
-
 int main(void) {
 
   // TODO: render ui here
@@ -31,12 +20,13 @@ int main(void) {
   /*const int screenWidth = 800;*/
   /*const int screenHeight = 450;*/
 
-  dArray doctors;
-  initArray(&doctors, 3, sizeof(doctor));
   printf("if you want to quit press(q): \n");
   printf("for adding patient type (d): \n");
   bool shouldQuit = false;
-
+  sqlite3 *db;
+  init_db(&db);
+  create_tables(db);
+  Doctor *doctors = NULL;
   while (!shouldQuit) {
     printf("\n--- Main Menu ---\n");
     printf("(n) Add new doctor\n");
@@ -49,34 +39,29 @@ int main(void) {
     switch (input) {
     case 'q':
       return 0;
-    case 'n':
-      addDoctor(&doctors);
-      break;
+    case 'n': {
+      const char *name = getInput("write doctor name: ");
+      printf("name is: %s\n", name);
+      insert_doctor(db, name);
+    } break;
     case 'm': {
-      int docIndex = selectDoctor(&doctors);
-      if (docIndex >= 0) {
-        doctor *dList = (doctor *)doctors.array;
-        manageDoctor(&dList[docIndex]);
-      }
     } break;
     case 's': {
       char *viewChoice =
           getInput("Show (c) completed, (i) incomplete, (a) all: ");
-      printPatients(viewChoice, doctors);
-      free(viewChoice);
+      int doctor_count = 0;
+      if (get_all_doctors(db, &doctors, &doctor_count) == SQLITE_OK) {
+        for (int i = 0; i < doctor_count; i++) {
+          printf("Doctor ID: %d, Name: %s\n", doctors[i].id, doctors[i].name);
+        }
+        free(viewChoice);
+        close_db(db);
+      }
     } break;
     default:
       printf("Invalid input!\n");
       break;
     }
-  }
-  doctor *dList = (doctor *)doctors.array;
-  for (size_t i = 0; i < doctors.used; i++) {
-    patient *plist = (patient *)dList[i].patients.array;
-    for (size_t j = 0; j < dList[i].patients.used; j++) {
-      free(plist[j].ops.array);
-    }
-    free(dList[i].patients.array);
   }
   return 0;
 }

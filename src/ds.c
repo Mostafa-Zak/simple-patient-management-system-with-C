@@ -42,6 +42,7 @@ void addOp(dArray *ops) {
   while (true) {
     char *input = getInput(
         "Type operation name (or type 'p' to stop adding operations):\n");
+
     if (strcmp(input, "p") == 0) {
       free(input);
       break;
