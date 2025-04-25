@@ -13,12 +13,16 @@ typedef struct {
   int id;
   char name[100];
   int age;
-  int status;
+  int status;// 0 for incomplete 1 for complete
   int doctor_id;
 } Patient;
 
 int insert_patient(sqlite3 *db, const char *name, int age, int doctor_id,int status);
 int get_all_patients(sqlite3 *db, Patient **patients, int *count);
 int get_patient_by_id(sqlite3 *db, int id, Patient *patient);
+int delet_patient_by_id(sqlite3 *db, int id);
+int delet_all_patients(sqlite3 *db);
+
+
 
 #endif

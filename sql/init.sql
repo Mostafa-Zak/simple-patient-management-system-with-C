@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS operations (
   description TEXT,
   date TEXT,
   status INTEGER,
-  FOREIGN KEY(patient_id) REFERENCES patients(id)
+  FOREIGN KEY(patient_id) REFERENCES patients(id),
+  FOREIGN KEY(doctor_id) REFERENCES doctors(id)
 );
 
 

@@ -10,5 +10,5 @@
 
 int insert_operation(sqlite3 *db, int patient_id, const char *description, const char *date);
 int get_operations_by_patient(sqlite3 *db, int patient_id);
-
+int get_operations_by_doctor(sqlite3 *db, int doctor_id);
 #endif

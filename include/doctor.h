@@ -16,5 +16,6 @@ typedef struct {
 int get_all_doctors(sqlite3 *db, Doctor **doctors, int *count);
 int insert_doctor(sqlite3 *db, const char *name);
 int get_doctor_by_id(sqlite3 *db, int id, Doctor *doctor);
-
+int delet_doctor_by_id(sqlite3 *db, int id);
+int delet_all_doctors(sqlite3 *db);
 #endif
