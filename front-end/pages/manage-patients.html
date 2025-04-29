@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Patients</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="dot-background"></div>
+  <div class="haze-layer"></div>
+
+  <div class="manage-container">
+    <h1>Manage Patients</h1>
+
+    <div class="patient-btn">
+      <button class="action-btn" onclick="toggleDetails('patient-1')">Alice Johnson</button>
+      <div id="patient-1" class="patient-details">
+        <p><strong>Age:</strong> 32</p>
+        <h2>Operations</h2>
+        <ul class="operations-list">
+          <li>
+            <span>Root Canal – Dr. John Doe</span>
+            <button class="action-btn small-btn delete-btn">Delete</button>
+          </li>
+          <li>
+            <span>Teeth Whitening – Dr. Jane Smith</span>
+            <button class="action-btn small-btn delete-btn">Delete</button>
+          </li>
+        </ul>
+        <button class="action-btn">Add Operation</button>
+      </div>
+    </div>
+
+    <div class="patient-btn">
+      <button class="action-btn" onclick="toggleDetails('patient-2')">Bob Smith</button>
+      <div id="patient-2" class="patient-details">
+        <p><strong>Age:</strong> 45</p>
+        <h2>Operations</h2>
+        <ul class="operations-list">
+          <li>
+            <span>Implant – Dr. Sarah Brown</span>
+            <button class="action-btn small-btn delete-btn">Delete</button>
+          </li>
+        </ul>
+        <button class="action-btn">Add Operation</button>
+      </div>
+    </div>
+
+    <div class="manage-options">
+      <a href="../index.html" class="action-btn back-btn">Back</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleDetails(patientId) {
+      const section = document.getElementById(patientId);
+      section.style.display = section.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
+

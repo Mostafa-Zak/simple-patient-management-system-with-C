@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to PMS/DPMS</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <!-- Dot Background Layer -->
+  <div class="dot-background"></div>
+  
+  <!-- Haze Layer (separate from the dot grid) -->
+  <div class="haze-layer"></div>
+  
+  <!-- Main Content -->
+  <div class="welcome-container">
+    <h1>Welcome to Patient Management System</h1>
+    <p>Select an option to proceed:</p>
+
+    <div class="buttons">
+      <button class="action-btn" id="add-doctor-btn">➕ Add New Doctor</button>
+      <button class="action-btn" id="manage-btn">🛠 Manage</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('add-doctor-btn').onclick = function() {
+      // Redirect to Add Doctor page or popup (you can replace alert with a proper redirect)
+      window.location.href = './pages/add-new-doctor.html'; 
+    };
+
+    document.getElementById('manage-btn').onclick = function() {
+      // Redirect to Manage page
+      window.location.href = './pages/manage.html'; 
+    };
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,338 @@
+@font-face {
+  font-family: 'IBM';
+  /* The name you'll use to refer to the font */
+  src: url('../../external/resources/IBMPlexMono-Regular.ttf') format('truetype');
+  /* Path to the font file */
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'IBM', sans-serif;
+  background-color: #f0f4f8;
+  /* Light background color */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dot Grid Background */
+.dot-background {
+  position: fixed;
+  /* Change position to fixed to keep it in place while scrolling */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, #09332C 10%, transparent 10%);
+  background-size: 20px 20px;
+  /* Dot size and spacing */
+  background-position: 0 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Ensures the background doesn't block interactions */
+}
+
+/* Haze Layer on Top */
+.haze-layer {
+  position: fixed;
+  /* Change position to fixed to keep it in place while scrolling */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #2E4B3C, #F7DFBA);
+  pointer-events: none;
+  /* Ensure the haze doesn't block interactions */
+  z-index: 0;
+  /* Make sure it's above the dot grid */
+}
+
+/* Main Content */
+.welcome-container {
+  z-index: 2;
+  /* Ensures the content is on top of the background and haze */
+  background-color: #F7DFBA;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  border-color: #09332C;
+}
+
+h1 {
+  font-size: 24px;
+  color: #09332C;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.action-btn {
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #000000;
+  background-color: #FFA74F;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  /* This removes the underline from links */
+}
+
+.action-btn:hover {
+  background-color: #F0531C;
+}
+
+.action-btn:active {
+  background-color: #004481;
+}
+
+.manage-container {
+  z-index: 2;
+  background-color: #F7DFBA;
+  text-align: center;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-height: 80vh;
+  /* Restrict the container's height */
+  overflow-y: auto;
+  /* Allow scrolling */
+}
+
+.manage-options {
+  margin-top: 30px;
+}
+
+.manage-options .action-btn {
+  margin: 10px;
+}
+
+.back-btn {
+  background-color: #2E4B3C;
+  /* A softer color for the back button */
+  color: #ffffff;
+  /* Dark text color */
+}
+
+.back-btn:hover {
+  background-color: #08312A;
+  /* Lighter color on hover */
+}
+
+.back-btn:active {
+  background-color: #7A8C87;
+  /* Slightly darker on click */
+}
+
+.form-container {
+  z-index: 2;
+  text-align: center;
+  padding: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #F7DFBA;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.form-container h1 {
+  margin-top: -10px;
+  /* or -15px, adjust as needed */
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.form-container button {
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #000000;
+  background-color: #FFA74F;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.form-container button:hover {
+  background-color: #F0531C;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-row label {
+  width: 100px;
+  text-align: left;
+  font-size: 16px;
+  color: #09332C;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Doctors List */
+.doctor-btn {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px auto;
+  text-align: center;
+}
+
+/* New style for doctor information (button and delete button) */
+.doctor-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  /* Add space between the doctor button and delete button */
+}
+
+.delete-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #D32F2F;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #B71C1C;
+}
+
+.delete-btn:active {
+  background-color: #7B1FA2;
+}
+
+.patients-section h2 {
+  margin-bottom: 10px;
+  color: #09332C;
+  width: 100%;
+}
+
+.patients-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+.patients-list li {
+  background-color: #fff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  color: #333;
+}
+
+/* Hide the patients section by default */
+.patients-section {
+  display: none;
+}
+
+/* Style for the Back Button */
+.back-btn {
+  background-color: #2E4B3C;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Manage Patients Page Adjustments */
+
+/* Manage Patients Page Adjustments */
+
+.patient-btn {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.patient-details {
+  display: none;
+  /* this is key to mimic doctor page */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.patient-details h2 {
+  margin-bottom: 10px;
+  color: #09332C;
+}
+
+.operations-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.operations-list li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.small-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.delete-btn {
+  background-color: #E54B4B;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #C0392B;
+}
