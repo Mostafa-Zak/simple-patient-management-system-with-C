@@ -1,26 +1,17 @@
 #include "../include/db.h"
 #include "../include/doctor.h"
-#include "../include/ds.h"
 #include "../include/patient.h"
+#include "../include/utils.h"
+#include "sqlite3.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-// #include "raylib.h"
-#include "sqlite3.h"
-/*#define RAYGUI_IMPLEMENTATION*/
-/*#include "raygui.h"*/
-/*#undef RAYGUI_IMPLEMENTATION            // Avoid including raygui
- * implementation again*/
 
-#define SIZEOF(A) (sizeof(A) / sizeof(A[0]))
 int main(void) {
 
   // TODO: render ui here
-
-  /*const int screenWidth = 800;*/
-  /*const int screenHeight = 450;*/
 
   printf("if you want to quit press(q): \n");
   printf("for adding patient type (d): \n");
